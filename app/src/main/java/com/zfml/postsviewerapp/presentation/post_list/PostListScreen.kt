@@ -58,10 +58,10 @@ import com.zfml.postsviewerapp.domain.model.Post
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostListScreen(onPostClick: (Int) -> Unit, viewModel: PostListViewModel = hiltViewModel()) {
-    val ui by viewModel.postListUiState.collectAsState()
+    val postListUiState by viewModel.postListUiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(ui.error) { ui.error?.let { snackbarHostState.showSnackbar(it) } }
+    LaunchedEffect(postListUiState.error) { postListUiState.error?.let { snackbarHostState.showSnackbar(it) } }
 
     Scaffold(
         topBar = {
@@ -76,19 +76,19 @@ fun PostListScreen(onPostClick: (Int) -> Unit, viewModel: PostListViewModel = hi
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { padding ->
         Column(Modifier.padding(padding)) {
-            SearchBarRow(query = ui.query, onQueryChange = viewModel::onQueryChange)
+            SearchBarRow(query = postListUiState.query, onQueryChange = viewModel::onQueryChange)
 
             SwipeRefresh(
-                state = rememberSwipeRefreshState(isRefreshing = ui.isLoading),
+                state = rememberSwipeRefreshState(isRefreshing = postListUiState.isLoading),
                 onRefresh = { viewModel.refresh() }
             ) {
                 when {
-                    ui.posts.isEmpty() && ui.isLoading -> {
+                    postListUiState.posts.isEmpty() && postListUiState.isLoading -> {
                         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                             CircularProgressIndicator()
                         }
                     }
-                    ui.posts.isEmpty() -> {
+                    postListUiState.posts.isEmpty() -> {
                         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                             Text("No posts found", style = MaterialTheme.typography.bodyLarge)
                         }
@@ -98,7 +98,7 @@ fun PostListScreen(onPostClick: (Int) -> Unit, viewModel: PostListViewModel = hi
                             modifier = Modifier.fillMaxSize().padding(horizontal = 8.dp, vertical = 4.dp),
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            items(ui.posts, key = { it.id }) { post ->
+                            items(postListUiState.posts, key = { it.id }) { post ->
                                 PostListItem(post = post, onClick = { onPostClick(post.id) })
                             }
                         }
