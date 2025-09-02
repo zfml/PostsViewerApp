@@ -23,33 +23,33 @@ class PostListViewModel @Inject constructor(private val repository: PostsReposit
         val error: String? = null
     )
 
-    private val _ui = MutableStateFlow(UiState(isLoading = true))
-    val ui: StateFlow<UiState> = _ui.asStateFlow()
+    private val _postListUiState = MutableStateFlow(UiState(isLoading = true))
+    val postListUiState: StateFlow<UiState> = _postListUiState.asStateFlow()
 
     private val _data = MutableStateFlow<List<Post>>(emptyList())
 
     init {
         viewModelScope.launch {
-            repository.posts.combine(_ui) { posts, ui ->
-                val filtered = if (ui.query.isBlank()) posts else posts.filter { it.title.contains(ui.query, ignoreCase = true) }
+            repository.posts.combine(_postListUiState) { posts, postListUiState ->
+                val filtered = if (postListUiState.query.isBlank()) posts else posts.filter { it.title.contains(postListUiState.query, ignoreCase = true) }
                 Pair(posts, filtered)
             }.collect { (all, filtered) ->
                 _data.value = all
-                _ui.update { it.copy(posts = filtered, isLoading = false) }
+                _postListUiState.update { it.copy(posts = filtered, isLoading = false) }
             }
         }
         refresh()
     }
 
     fun onQueryChange(q: String) {
-        _ui.update { it.copy(query = q) }
+        _postListUiState.update { it.copy(query = q) }
     }
 
     fun refresh() {
         viewModelScope.launch {
-            _ui.update { it.copy(isLoading = true, error = null) }
+            _postListUiState.update { it.copy(isLoading = true, error = null) }
             val r = repository.refresh()
-            _ui.update { it.copy(isLoading = false, error = r.error) }
+            _postListUiState.update { it.copy(isLoading = false, error = r.error) }
         }
     }
 }

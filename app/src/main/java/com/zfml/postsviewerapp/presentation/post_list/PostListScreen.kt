@@ -58,7 +58,7 @@ import com.zfml.postsviewerapp.domain.model.Post
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostListScreen(onPostClick: (Int) -> Unit, viewModel: PostListViewModel = hiltViewModel()) {
-    val ui by viewModel.ui.collectAsState()
+    val ui by viewModel.postListUiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(ui.error) { ui.error?.let { snackbarHostState.showSnackbar(it) } }

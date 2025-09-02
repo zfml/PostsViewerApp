@@ -37,9 +37,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PostDetailScreen(postId: Int, onBack: () -> Unit, vm: PostDetailViewModel = hiltViewModel()) {
-    LaunchedEffect(postId) { vm.load(postId) }
-    val post by vm.post.collectAsState()
+fun PostDetailScreen(postId: Int, onBack: () -> Unit, postDetailViewModel: PostDetailViewModel = hiltViewModel()) {
+    LaunchedEffect(postId) { postDetailViewModel.load(postId) }
+    val post by postDetailViewModel.post.collectAsState()
 
     Scaffold(
         topBar = {
