@@ -2,6 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    id("kotlin-kapt")
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -49,6 +53,49 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    implementation(libs.android.datastore.preferences)
+
+    implementation(libs.hilt.android)
+
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.navigation.compose)
+
+
+//    implementation(libs.firebase.functions.ktx)
+//    implementation(libs.kotlinx.coroutines.play.services)
+
+    // Room dependencies
+    implementation(libs.room.runtime)
+    kapt(libs.room.compiler)  // Use kapt for Kotlin annotation processing
+    implementation(libs.room.ktx)  // Optional: For Kotlin extensions
+
+    implementation(libs.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
+
+
+    implementation(libs.androidx.core.splashscreen)
+
+
+    implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.material.icons.extended)
+
+    implementation(libs.androidx.compose.foundation)
+
+
+    implementation(libs.accompanist.pager)
+
+
+    implementation(libs.lifecycle.runtime.compose)
+
+
+
+    implementation(libs.coil.compose)
+
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -56,4 +103,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+kapt {
+    correctErrorTypes = true
 }
