@@ -95,6 +95,16 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
 
+    implementation(libs.logging.interceptor)
+
+    implementation(libs.accompanist.swiperefresh)
+
+    implementation(libs.lottie.compose)
+
+
+
+
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

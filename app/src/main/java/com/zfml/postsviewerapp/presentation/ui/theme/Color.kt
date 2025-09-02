@@ -1,4 +1,4 @@
-package com.zfml.postsviewerapp.ui.theme
+package com.zfml.postsviewerapp.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
